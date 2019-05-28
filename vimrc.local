@@ -1,0 +1,90 @@
+" Color scheme
+syntax on
+
+let g:airline#extensions#tabline#enabled = 1
+let g:onedark_hide_endofbuffer = 0
+let g:onedark_termcolors = 256
+let g:onedark_terminal_italics = 1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+"let NERDTreeMapOpenInTab='<ENTER>'
+let NERDTreeQuitOnOpen = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+colorscheme onedark
+
+" ale config
+"let g:ale_completion_enabled = 1
+"let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+"let g:airline#extensions#ale#enabled = 1
+"let g:ale_sign_error = '✖'
+"let g:ale_sign_warning = '--'
+
+" vim-move config
+" for terms that send Alt as Escape sequence
+" see http://vim.wikia.com/wiki/Mapping_fast_keycodes_in_terminal_Vim
+" for why the <F20> hack. Keeps Esc from waiting for other keys to exit visual
+set <F20>=j
+set <F21>=k
+vmap <F20> <Plug>MoveBlockDown
+vmap <F21> <Plug>MoveBlockUp
+nmap <F20> <Plug>MoveLineDown
+nmap <F21> <Plug>MoveLineUp
+
+set ttimeoutlen=0
+"set timeout ttimeoutlen=50
+if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+"For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+"Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+if (has("termguicolors"))
+    set termguicolors
+endif
+"colorscheme github
+"highlight NonText guibg=#060606
+"highlight Folded  guibg=#0A0A0A guifg=#9090D0
+map <C-b> :NERDTreeToggle<CR>
+set relativenumber
+set foldmethod=indent
+set clipboard=unnamedplus
+
+let g:ale_linters = {'javascript': ['eslint']}
+let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let g:airline#extensions#ale#enabled = 1
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '--'
+
+" leave insert mode quickly
+if ! has('gui_running')
+    set ttimeoutlen=10
+    augroup FastEscape
+        autocmd!
+        au InsertEnter * set timeoutlen=0
+        au InsertLeave * set timeoutlen=1000
+    augroup END
+endif
+
+"use Ag with ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" bind \ (backward slash) to grep shortcut
+"command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+"map it to any character, such as \
+nnoremap \ :Ag<SPACE>
+
+"open from quickfix in new tab
+autocmd FileType qf nnoremap <buffer> <Enter> <C-W><Enter><C-W>T
+
+"save shortcut keys
+nnoremap <Leader>s :w<cr>
