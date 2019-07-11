@@ -32,6 +32,7 @@ vmap <F20> <Plug>MoveBlockDown
 vmap <F21> <Plug>MoveBlockUp
 nmap <F20> <Plug>MoveLineDown
 nmap <F21> <Plug>MoveLineUp
+filetype plugin on
 
 set ttimeoutlen=0
 "set timeout ttimeoutlen=50
